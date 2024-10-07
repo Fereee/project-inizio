@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Afacad+Flux:wght@100..1000&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">    <link rel="stylesheet" href="main.css">
+    <title>Vypracované zadanie</title>
+</head>
+<body>
+    <div class="wrapper">
+        <h1>Malý milý vyhľadávač</h1>
+        <div class="search-controls">
+            <input type="text" id="phrase" placeholder="Čo vás zaujíma?">
+            <div class="buttons">
+                <button onclick="searchGoogle()">Hľadať</button>
+                <button onclick="downloadResults()">Stiahnuť výsledky</button>
+            </div>
+            <div class="results" id="results"></div>
+        </div>
+    </div>
+
+    <script>
+        const apiKey = 'AIzaSyCVpdra-0Hsz6tEUz5CVWuUCuSQNo8BV9Y';  // Tvoj API Key
+        const cx = 'c2cd07da4f8b44c4b';  // Tvoj Search Engine ID
+        let searchResults = [];  // Pole na uloženie výsledkov
+
+        function searchGoogle() {
+            const phrase = document.getElementById('phrase').value;
+            if (phrase) {
+                fetch(`https://www.googleapis.com/customsearch/v1?key=${apiKey}&cx=${cx}&q=${encodeURIComponent(phrase)}&lr=lang_sk&gl=sk&hl=sk`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const resultsDiv = document.getElementById('results');
+                        resultsDiv.innerHTML = '';
+                        searchResults = [];  // Clear previous results
+                        if (data.items) {
+                            data.items.forEach(item => {
+                                const resultItem = document.createElement('div');
+                                resultItem.className = 'result-item';
+
+                                // Create the link for the result
+                                const link = document.createElement('a');
+                                link.href = item.link;
+                                link.target = '_blank';
+                                link.textContent = item.title;
+
+                                // Append link to the result item and display
+                                resultItem.appendChild(link);
+                                resultsDiv.appendChild(resultItem);
+
+                                // Save results for download
+                                searchResults.push({
+                                    title: item.title,
+                                    link: item.link,
+                                });
+                            });
+                        } else {
+                    resultsDiv.innerHTML = 'Nič sa nenašlo.';
+                    }
+                })
+                .catch(error => {
+                    console.error('Chyba:', error);
+                });
+            }
+        }
+
+        // Funkcia na stiahnutie výsledkov vo formáte CSV
+        function downloadResults() {
+            if (searchResults.length === 0) {
+                alert("Neexistujú výsledky na stiahnutie.");
+                return;
+            }
+
+            // Vytvorenie CSV obsahu
+            let csvContent = "data:text/csv;charset=utf-8,";
+            csvContent += "Title,Link\n";  // Hlavné stĺpce
+            searchResults.forEach(item => {
+                csvContent += `${item.title},${item.link}\n`;  // Záznamy
+            });
+
+            // Vytvorenie a kliknutie na dočasný odkaz na stiahnutie
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement('a');
+            link.setAttribute('href', encodedUri);
+            link.setAttribute('download', 'vysledky_vyhladavania.csv');
+            document.body.appendChild(link);  // Pridanie odkazu do tela
+            link.click();  // Kliknutie na odkaz
+            document.body.removeChild(link);  // Odstránenie odkazu
+        }
+    </script>
+</body>
+</html>

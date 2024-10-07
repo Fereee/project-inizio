@@ -1,0 +1,60 @@
+html {
+    background-color: #1f1f1f;
+    color: aliceblue;
+    font-family: "Afacad Flux", sans-serif;
+    padding-top: 80px;
+}
+
+.wrapper {
+    width: 40%;
+    margin: auto;
+    padding: 20px;
+    border-style: solid;
+    border-radius: 12px;
+}
+
+h1 {
+    text-align:center;
+    font-size: 40px;
+}
+
+div.search-controls {
+    text-align: center;
+}
+
+input {
+    width: 50%;
+    margin: auto;
+    padding: 4px 10px 4px 10px;
+    font-family: "Afacad Flux", sans-serif;
+    font-size: 1em;
+    border-style: hidden;
+    border-radius: 25px;
+}
+
+div.buttons {
+    padding: 10px
+}
+
+button {
+    padding: 5px 10px 5px 10px;
+    border-radius: 10px;
+    background-color: #f8bc09;
+}
+
+button:active {
+    background-color: #be9108;
+}
+
+button:hover {
+    cursor: pointer;
+}
+
+.results {
+    text-align: left;
+    line-height: 2;   
+}
+
+.results a {
+    color: aliceblue;
+}
