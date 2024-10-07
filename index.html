@@ -5,31 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Afacad+Flux:wght@100..1000&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">    <link rel="stylesheet" href="main.css">
-    <title>Vypracované zadanie</title>
+    <link href="https://fonts.googleapis.com/css2?family=Afacad+Flux:wght@100..1000&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="main.css">
+    <title>Môj malý vyhľadávač</title>
 </head>
 <body>
-    <div class="wrapper">
-        <h1>Malý milý vyhľadávač</h1>
-        <div class="search-controls">
-            <input type="text" id="phrase" placeholder="Čo vás zaujíma?">
-            <div class="buttons">
-                <button onclick="searchGoogle()">Hľadať</button>
+    <div class="wrapper"> 
+        <h1>Môj malý vyhľadávač</h1> <!--názov-->
+        <div class="search-controls"> <!--zadefinovaný blok pre nastavenie formátu v css súbore-->
+            <input type="text" id="phrase" placeholder="Čo vás zaujíma?"> <!--pole pre vyhľadávanie-->
+            <div class="buttons"> <!--blok pre tlačidlá-->
+                <button onclick="searchGoogle()">Hľadať</button> <!--tlačidlo s js eventom-->
                 <button onclick="downloadResults()">Stiahnuť výsledky</button>
             </div>
-            <div class="results" id="results"></div>
+            <div class="results" id="results"></div> <!--Tu sa zobrazia výsledky-->
         </div>
     </div>
 
     <script>
-        const apiKey = 'AIzaSyCVpdra-0Hsz6tEUz5CVWuUCuSQNo8BV9Y';  // Tvoj API Key
-        const cx = 'c2cd07da4f8b44c4b';  // Tvoj Search Engine ID
+        const apiKey = 'AIzaSyCVpdra-0Hsz6tEUz5CVWuUCuSQNo8BV9Y';  // google api kľúč
+        const cx = 'c2cd07da4f8b44c4b';  // ID môjho Google Search Engine ID
         let searchResults = [];  // Pole na uloženie výsledkov
 
+        // Funkcia vyhľadávania na Google
         function searchGoogle() {
             const phrase = document.getElementById('phrase').value;
             if (phrase) {
-                fetch(`https://www.googleapis.com/customsearch/v1?key=${apiKey}&cx=${cx}&q=${encodeURIComponent(phrase)}&lr=lang_sk&gl=sk&hl=sk`)
+                fetch(`https://www.googleapis.com/customsearch/v1?key=${apiKey}&cx=${cx}&q=${encodeURIComponent(phrase)}&lr=lang_sk&gl=sk&hl=sk`) // Nastavenia Search engin ohľadom jazyka a lokalizácie nefungovalo, zadanie parametrov lr gl hl zabralo
                     .then(response => response.json())
                     .then(data => {
                         const resultsDiv = document.getElementById('results');
@@ -57,7 +59,7 @@
                                 });
                             });
                         } else {
-                    resultsDiv.innerHTML = 'Nič sa nenašlo.';
+                    resultsDiv.innerHTML = 'Nič sa nenašlo.'; // Hláška pre prípad neúspešného vyhľadávania
                     }
                 })
                 .catch(error => {
